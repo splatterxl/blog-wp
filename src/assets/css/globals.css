@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap");
+
+:root {
+  --color-primary: #05bd61;
+  --color-secondary: #e0be26;
+  --color-text: #dddddd;
+  --color-bg: #252525;
+  --font-primary: "Open Sans", Arial, Helvetica, sans-serif;
+  --font-heading: "Montserrat", Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+}
+
+h1,
+h2 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+#container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+}
+
+.article-author,
+.article-list-name {
+  font-weight: bold;
+}
+
+.article-date-actual {
+  font-weight: bold;
+}
+
+.article-data-modified,
+.article-list-date {
+  /* italic */
+  font-style: italic;
+}

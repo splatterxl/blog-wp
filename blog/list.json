@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Making a Blog in Pure, Vanilla JavaScript",
+    "slug": "making-blog",
+    "description": "Basically, the making of this website. This is the story of how I learnt to use Webpack and HTML/CSS/JS alongside a simple Express router.",
+    "author": "Splatterxl",
+    "created": "2022-05-14",
+    "modified": null
+  }
+]
