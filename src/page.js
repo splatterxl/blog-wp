@@ -1,6 +1,6 @@
 import { createElement, updateDOM, title } from "./util/dom.js";
 import { query } from "./util/query.js";
-import { setURL } from "./router.js";
+import { setURL, pushURL } from "./router.js";
 
 export function createPage(href = location.href) {
   if (query.get("error")) {
@@ -32,7 +32,7 @@ export function getSlug(path) {
   return pathname[0];
 }
 
-export async function createArticlePage(slug) {
+export async function createArticlePage(slug, push = false) {
   const index = await fetch("/api/blog/list").then((res) => res.json());
 
   const article = index.find((article) => article.slug === slug);
@@ -97,7 +97,7 @@ export async function createArticlePage(slug) {
   updateDOM(header);
   title(name);
 
-  setURL(`/articles/${slug}`);
+  (push ? pushURL : setURL)(`/articles/${slug}`);
 }
 
 export async function createHomePage() {
@@ -131,7 +131,7 @@ export async function createArticleList() {
         href: `/articles/${slug}`,
         onClick(event) {
           event.preventDefault();
-          createArticlePage(slug);
+          createArticlePage(slug, true);
         },
       },
       [
