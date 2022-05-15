@@ -1,13 +1,26 @@
+import { createPage } from './page.js';
+import { sessionNonce } from './util/nonce.js';
+
 export function setURL(url) {
-  window.history.replaceState(null, "", url);
+  window.history.replaceState({
+    nonce: sessionNonce
+  }, "", url);
 }
 
 export function pushURL(url) {
-  window.history.pushState(null, '', url);
+  window.history.pushState({
+    nonce: sessionNonce
+  }, '', url);
 }
 
 export function navigate(url) {
-  setURL(url);
-  const deconstructed = new URL(url);
-  createPage(deconstructed.href, deconstructed.search);
+  pushURL(url);
+  createPage(url);
 }
+
+window.onpopstate = (event) => {
+  if (event.state && event.state.nonce === sessionNonce) {
+    event.preventDefault();
+    createPage(location.pathname);
+  }
+};

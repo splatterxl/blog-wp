@@ -26,6 +26,9 @@ app.get("/articles/:slug", (req, res) => {
     res.redirect("/app?error=404");
   }
 });
+app.get('/avatar', (req, res) => {
+  res.redirect('https://avatars.githubusercontent.com/u/67709748');
+});
 // serve static files from ../app/ whenever a request is called to /app/*
 app.use(
   "/app",
@@ -64,7 +67,9 @@ function createOG(data) {
   <meta property="og:description" content="${data.description}">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Splatterxl's Blog">
-  <meta property="og:locale" content="en_US">
+  <meta property="og:locale" content="en_GB">
+  <meta property="theme-color" content="#19ab63" />
+  <meta property="og:image" content="/avatar">
   <meta http-equiv="refresh" content="0; url=/app?id=${data.slug}">
   <link rel="stylesheet" href="/assets/css/globals.css">
 </head>
