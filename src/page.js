@@ -1,17 +1,21 @@
 import { createElement, updateDOM, title } from './util/dom.js';
 import { query } from './util/query.js';
 import { setURL, pushURL, navigate } from './router.js';
+import { debug } from './util/logging.js';
 
 export function createPage(pathname = location.pathname) {
 	if (query.get('error')) {
+		debug('render', 'paint error:', query.get('error'));
 		return createErrorPage(query.get('error'));
 	}
 
 	const slug = getSlug(pathname);
 
 	if (slug) {
+		debug('render', 'paint article:', slug);
 		return createArticlePage(slug);
 	} else {
+		debug('render', 'paint app home');
 		return createHomePage();
 	}
 }
