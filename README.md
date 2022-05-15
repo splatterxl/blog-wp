@@ -12,7 +12,7 @@ Blog sideproject, probably won't get deployed
 
 ```sh
 NODE_ENV=production yarn webpack
-``
+```
 
 ## run
 
