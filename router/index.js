@@ -11,7 +11,7 @@ app.use((req, _, next) => {
 	next();
 });
 app.get('/', (req, res) => {
-	res.redirect('/app');
+	res.redirect('/app/');
 });
 app.get('/noscript', (req, res) => {
 	res.redirect('/app/unsupported');
@@ -23,7 +23,7 @@ app.get('/articles/:slug', (req, res) => {
 	if (index.has(req.params.slug)) {
 		res.send(createOG(index.get(req.params.slug)));
 	} else {
-		res.redirect('/app?error=404');
+		res.redirect('/app/?error=404');
 	}
 });
 app.get('/avatar', (req, res) => {
