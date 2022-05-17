@@ -64,5 +64,5 @@ registerById('editor', 'click', event => {
   info("router", "going to editor:", location.pathname);
 
   event.preventDefault();
-  location.href = "https://youtube.com/watch?v=dQw4w9WgXcQ";
+  window.open("https://youtube.com/watch?v=dQw4w9WgXcQ");
 });
