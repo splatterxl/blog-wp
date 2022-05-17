@@ -1,41 +1,68 @@
-const { createPage } = require("./page.js");
-const { info, debug } = require("./util/logging.js");
-const { sessionNonce } = require("./util/nonce.js");
+import { createPage, createHomePage } from "./page.js";
+import { goUp, navigate } from './router.js';
+import { info, debug } from "./util/logging.js";
+import { sessionNonce } from './util/nonce.js';
 
-window.onpopstate = (event) => {
+function register(target, event, handler) {
+  target.addEventListener(event, handler);
+}
+
+function registerById(id, event, handler) {
+  const target = document.getElementById(id);
+  register(target, event, handler);
+}
+
+
+register(window, 'popstate', (event) => {
   if (event.state && event.state.nonce === sessionNonce) {
     info("router", "popstate:", event.target.location.pathname);
 
     event.preventDefault();
     createPage(location.pathname);
   }
-};
+});
 
-document.getElementById("back").onclick = (event) => {
+registerById('back', 'click', (event) => {
   info("router", "back:", location.pathname);
 
   event.preventDefault();
-  history.back();
-};
+  goUp();
+});
 
-document.getElementById("hamburger").onclick = (event) => {
+registerById('home', 'click', (event) => {
+  info("router", "home:", location.pathname);
+
+  event.preventDefault();
+  createHomePage();
+});
+
+registerById('hamburger', 'click', (event) => {
   debug("router", "hamburger pressed, toggling menu");
 
   event.preventDefault();
 
   const navbar = document.getElementById("navbar");
-  const inner = document.getElementById("nav-inner");
   const menu = document.getElementById("hamburger-icon");
 
-  if (inner.style.display === "block") {
-    inner.style.display = "none";
-    inner.hidden = true;
+  if (navbar.classList.contains('open')) {
     navbar.classList.remove("open");
     menu.textContent = "menu";
   } else {
-    inner.style.display = "block";
-    inner.hidden = false;
     navbar.classList.add("open");
     menu.textContent = "menu_open";
   }
-};
+});
+
+registerById('home', 'click', event => {
+  info("router", "phone home:", location.pathname);
+
+  event.preventDefault();
+  navigate("/");
+});
+
+registerById('editor', 'click', event => {
+  info("router", "going to editor:", location.pathname);
+
+  event.preventDefault();
+  location.href = "https://youtube.com/watch?v=dQw4w9WgXcQ";
+});

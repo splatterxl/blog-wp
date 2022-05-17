@@ -2,6 +2,7 @@ import { createElement, updateDOM, title } from "./util/dom.js";
 import { query } from "./util/query.js";
 import { setURL, pushURL, navigate } from "./router.js";
 import { debug } from "./util/logging.js";
+import { updateList } from './util/session.js';
 
 export function createPage(pathname = location.pathname) {
   if (query.get("error")) {
@@ -36,7 +37,7 @@ export function getSlug(path) {
 }
 
 export async function createArticlePage(slug, push = false) {
-  const index = await fetch("/api/blog/list").then((res) => res.json());
+  const index = await updateList();
 
   const article = index.find((article) => article.slug === slug);
 
@@ -103,7 +104,7 @@ export async function createArticlePage(slug, push = false) {
   (push ? pushURL : setURL)(`/articles/${slug}`);
 }
 
-export async function createHomePage() {
+export async function createHomePage(push = false) {
   const heading = createElement("h1", {
     class: "home-heading",
     text: "Welcome to my blog!",
@@ -120,11 +121,11 @@ export async function createHomePage() {
   updateDOM(header, list);
   title("Home");
 
-  setURL("/");
+  (push ? pushURL : setURL)("/");
 }
 
 export async function createArticleList() {
-  const index = await fetch("/api/blog/list").then((res) => res.json());
+  const index = await updateList();
 
   const list = index.map((article) => {
     const { name, slug } = article;
@@ -211,8 +212,12 @@ export function createErrorPage(code) {
         text: "Error",
       });
       const meta = createElement("p", {
-        text: "An error occurred. All I know: " + code,
-      });
+        text: "An error occurred. Here's all I know:",
+      }, [
+        createElement("pre", {
+          text: code
+        })
+      ]);
 
       const header = createElement("header", null, [heading, meta]);
 

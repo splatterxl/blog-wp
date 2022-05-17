@@ -26,6 +26,9 @@ app.get("/articles/:slug", (req, res) => {
     res.redirect("/app/?error=404");
   }
 });
+app.get("/editor", (req, res) => {
+  res.redirect("https://youtube.com/watch?v=dQw4w9WgXcQ");
+});
 app.get("/avatar", (req, res) => {
   res.redirect("https://avatars.githubusercontent.com/u/67709748");
 });

@@ -54,6 +54,7 @@ a:any-link {
 
 #navbar {
   width: 100%;
+  user-select: none;
 }
 
 /* for some reason dark reader doesn't like the navbar */
@@ -93,6 +94,15 @@ ul#pages {
   padding-right: 3vh;
 }
 
+.nav-list-item {
+  display: inline-block;
+  padding-right: 1.5em;
+}
+
+#pages .nav-list-item:hover {
+  text-decoration: underline;
+}
+
 /* make symbols align with text */
 .material-symbols-outlined {
   font-size: 14px;
@@ -100,8 +110,8 @@ ul#pages {
 }
 
 /* ah yes i love having all of this just for a hamburger menu */
-@media (max-width: 0px) {
-	#nav-inner, #actions {
+@media (max-width: 700px) {
+	#nav-inner, .nav-ul {
     display: none;
   }
 
@@ -114,20 +124,8 @@ ul#pages {
     font-size: 3em;
   }
 
-  ul#pages li {
-    list-style-type: disc;
-  }
-
-  #navbar.open {
-    z-index: 1;
-  }
-
-  #navbar {
-    width: 30%;
-    height: calc(100vh - 50px);
-    left: 0;
-    top: 0;
-    padding: 0;
+  #navbar.open #nav-inner {
+    display: block;
   }
 }
 
@@ -142,11 +140,6 @@ ul#pages {
   #nav-inner {
     display: none;
   }
-}
-
-
-#pages {
-  display: none;
 }
 
 .article-author,
