@@ -6,7 +6,9 @@ export function createElement(tagName, attrs, children) {
     attrs.class && (elem.className = attrs.class);
     attrs.id && (elem.id = attrs.id);
     attrs.text && (elem.textContent = attrs.text);
+    attrs.href && elem.setAttribute("href", attrs.href);
     attrs.onClick && elem.addEventListener("click", attrs.onClick);
+    Object.assign(elem, attrs);
   }
   if (children) {
     for (const child of children) {

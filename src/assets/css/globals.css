@@ -29,6 +29,7 @@ body {
   margin: 0;
 }
 
+
 h1,
 h2 {
   font-family: var(--font-heading);
@@ -38,7 +39,7 @@ h2 {
 /* remove special anchor link styles */
 a:link,
 a:any-link {
-  color: var(--color-text);
+  color: var(--color-primary);
   text-decoration: none;
 }
 
@@ -52,9 +53,19 @@ a:any-link {
   z-index: 0;
 }
 
+@media (max-width: 500px) {
+  #container {
+    padding: 5px;
+  }
+}
+
 #navbar {
   width: 100%;
   user-select: none;
+}
+
+#navbar a {
+  color: var(--color-text)
 }
 
 /* for some reason dark reader doesn't like the navbar */
@@ -157,8 +168,7 @@ ul#pages {
   font-style: italic;
 }
 
-a:link,
-.article-list-a {
+.article-list-a:link, .article-list-a:any-link {
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
