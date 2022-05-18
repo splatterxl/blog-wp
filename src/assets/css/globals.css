@@ -107,11 +107,18 @@ ul#pages {
 
 .nav-list-item {
   display: inline-block;
-  padding-right: 1.5em;
+}
+
+#pages .nav-list-item {
+  padding-left: 1.5em;
 }
 
 #pages .nav-list-item:hover {
   text-decoration: underline;
+}
+
+#actions .nav-list-item {
+  padding-right: 1.5em;
 }
 
 /* make symbols align with text */

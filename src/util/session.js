@@ -2,7 +2,8 @@ import { sessionNonce } from './nonce.js';
 
 export const session = {
   nonce: sessionNonce,
-  list: []
+  list: [],
+  page: "home",
 };
 
 export async function updateList() {
@@ -11,4 +12,8 @@ export async function updateList() {
   } else {
     return (session.list = await fetch('/api/blog/list').then(res => res.json()));
   }
-} 
+}
+
+export function getPage() {
+  return session.page;
+}

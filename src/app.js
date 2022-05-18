@@ -1,3 +1,3 @@
-import { createPage } from "./page.js";
+import { navigate } from './router.js';
 
-createPage();
+navigate(location.pathname, false);

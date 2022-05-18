@@ -2,9 +2,9 @@ import { createElement, updateDOM, title } from "./util/dom.js";
 import { query } from "./util/query.js";
 import { setURL, pushURL, navigate } from "./router.js";
 import { debug } from "./util/logging.js";
-import { updateList } from './util/session.js';
+import { updateList, session } from './util/session.js';
 
-export function createPage(pathname = location.pathname) {
+export function createPage(pathname = location.pathname, push = true) {
   if (query.get("error")) {
     debug("render", "paint error:", query.get("error"));
     return createErrorPage(query.get("error"));
@@ -13,11 +13,13 @@ export function createPage(pathname = location.pathname) {
   const slug = getSlug(pathname);
 
   if (slug) {
+    session.page = "article";
     debug("render", "paint article:", slug);
-    return createArticlePage(slug);
+    return createArticlePage(slug, push);
   } else {
+    session.page = "home";
     debug("render", "paint app home");
-    return createHomePage();
+    return createHomePage(push);
   }
 }
 
@@ -36,7 +38,7 @@ export function getSlug(path) {
   return pathname[0];
 }
 
-export async function createArticlePage(slug, push = false) {
+export async function createArticlePage(slug, push = true) {
   const index = await updateList();
 
   const article = index.find((article) => article.slug === slug);
@@ -104,7 +106,7 @@ export async function createArticlePage(slug, push = false) {
   (push ? pushURL : setURL)(`/articles/${slug}`);
 }
 
-export async function createHomePage(push = false) {
+export async function createHomePage(push = true) {
   const heading = createElement("h1", {
     class: "home-heading",
     text: "Welcome to my blog!",
