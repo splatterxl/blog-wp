@@ -3,8 +3,12 @@ import { query } from "./util/query.js";
 import { setURL, pushURL, navigate } from "./router.js";
 import { debug } from "./util/logging.js";
 import { updateList, session } from './util/session.js';
+import { get } from './util/http.js';
+
 
 export function createPage(pathname = location.pathname, push = true) {
+  console.log(query);
+
   if (query.get("error")) {
     debug("render", "paint error:", query.get("error"));
     return createErrorPage(query.get("error"));
@@ -12,14 +16,14 @@ export function createPage(pathname = location.pathname, push = true) {
 
   const slug = getSlug(pathname);
 
-  if (slug) {
+  if (slug && slug !== "index") {
     session.page = "article";
     debug("render", "paint article:", slug);
-    return createArticlePage(slug, push);
+    createArticlePage(slug, push);
   } else {
     session.page = "home";
     debug("render", "paint app home");
-    return createHomePage(push);
+    createHomePage(push);
   }
 }
 
@@ -41,14 +45,14 @@ export function getSlug(path) {
 export async function createArticlePage(slug, push = true) {
   const index = await updateList();
 
-  const article = index.find((article) => article.slug === slug);
+  const article = await get('/api/articles/' + slug);
 
   if (!article) {
     return createNotFoundPage();
   }
 
-  const { name, author, created, modified } = article;
-  // const content = await fetch(`/blog/content/${path}.md`).then(res => res.text());
+  const { title: name, author, date: created, modified = null } = article;
+  const content = await fetch(`/api/articles/${slug}/content`).then(res => res.text());
 
   const heading = createElement("h1", {
     class: "article-heading",
@@ -100,7 +104,9 @@ export async function createArticlePage(slug, push = true) {
 
   const header = createElement("header", null, [heading, meta]);
 
-  updateDOM(header);
+  updateDOM(header, createElement("article", {
+    innerHTML: content,
+  }));
   title(name);
 
   (push ? pushURL : setURL)(`/articles/${slug}`);

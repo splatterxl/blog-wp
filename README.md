@@ -4,10 +4,8 @@ Blog sideproject, probably won't get deployed
 
 ## structure
 
-- `src/` - JS
-- `app/` - HTML
-- `router/` - backend JS
-- `blog/` - Blog (Markdown, JSON)
+- `server/` router & api
+- `client/` client source
 
 ## build
 

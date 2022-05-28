@@ -1,0 +1,10 @@
+{
+  "crawlers": [
+    "bot",
+    "crawler",
+    "spider",
+  ],
+  "disallow": [
+    "nsa"
+  ]
+}

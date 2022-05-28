@@ -1,18 +1,10 @@
-const path = require("path");
+import path from 'node:path';
 
-module.exports = {
-  entry: "./src/app.js",
+export default {
+  entry: "./client/src/app.js",
   output: {
-    path: path.resolve(__dirname, "app"),
+    path: path.resolve("./client/assets/js"),
     filename: "bundle.js",
   },
   mode: process.env.NODE_ENV,
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-    ],
-  },
 };
