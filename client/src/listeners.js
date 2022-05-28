@@ -1,4 +1,4 @@
-import { createPage } from "./page.js";
+import { createErrorPage, createPage } from "./page.js";
 import { goUp, navigate } from './router.js';
 import { info, debug } from "./util/logging.js";
 import { session, getPage } from './util/session.js';
@@ -34,6 +34,12 @@ register(window, 'popstate', (event) => {
     createPage(location.pathname, false);
   }
 });
+
+export function handleError(err) {
+  info("router", "error:", err);
+
+  createErrorPage(err.name + ': ' + err.message);
+}
 
 registerById('back', 'click', (event) => {
   info("router", "back:", location.pathname);

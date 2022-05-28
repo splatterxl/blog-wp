@@ -1,0 +1,18 @@
+doctype html
+<html lang="en">
+<head>
+  meta(charset="UTF-8")
+  meta(name="viewport" content="width=device-width, initial-scale=1.0")
+  meta(http-equiv="X-UA-Compatible" content="ie=edge")
+  title #{data.name}
+  meta(name="description" content="#{data.description}")
+  meta(property="og:title" content="#{data.name}")
+  meta(property="og:description" content="#{data.description}")
+  meta(property="og:type" content="article")
+  meta(property="og:site_name" content="Splatterxl's Blog")
+  meta(property="og:locale" content="en_GB")
+  meta(property="theme-color" content="#19ab63")
+  meta(property="og:image" content="/avatar")
+  meta(http-equiv="refresh" content="0; url=/app?id=#{data.slug}")
+  link(rel="stylesheet", href="/assets/css/globals.css")
+body

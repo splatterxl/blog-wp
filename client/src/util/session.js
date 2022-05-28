@@ -1,3 +1,4 @@
+import { get } from './http.js';
 import { sessionNonce } from './nonce.js';
 
 export const session = {
@@ -10,7 +11,7 @@ export async function updateList() {
   if (session.list.length) {
     return session.list;
   } else {
-    return (session.list = await fetch('/api/blog/list').then(res => res.json()));
+    return (session.list = await get('/api/articles').catch(() => []));
   }
 }
 
