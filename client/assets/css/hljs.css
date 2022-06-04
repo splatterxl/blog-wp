@@ -1,93 +1,110 @@
 pre code.hljs {
   display: block;
   overflow-x: auto;
-  padding: 1em
+  padding: 1em;
 }
 
 code.hljs {
-  padding: 3px 5px
+  padding: 3px 5px;
 }
 
+/* added */
 pre {
   background: #201f1f;
   color: var(--color-text);
   padding: 1em;
 }
 
-.hljs-comment {
-  color: #4c6969
-}
-
-.hljs-punctuation,
-.hljs-tag {
-  color: #444a
-}
-
-.hljs-tag .hljs-attr,
-.hljs-tag .hljs-name {
-  color: #444
-}
-
-.hljs-attribute,
-.hljs-doctag,
-.hljs-keyword,
-.hljs-meta .hljs-keyword,
-.hljs-name,
-.hljs-selector-tag {
-  font-weight: 700
+/*!
+  Theme: Tokyo-night-Dark
+  origin: https://github.com/enkia/tokyo-night-vscode-theme
+  Description: Original highlight.js style
+  Author: (c) Henri Vandersleyen <hvandersleyen@gmail.com>
+  License: see highlight.js LICENSE
+  Touched: 2022
+*/
+.hljs-comment,
+.hljs-meta {
+  color: #259434; /* changed from original */
 }
 
 .hljs-deletion,
-.hljs-number,
-.hljs-quote,
+.hljs-doctag,
+.hljs-regexp,
+.hljs-selector-attr,
 .hljs-selector-class,
 .hljs-selector-id,
-.hljs-string,
+.hljs-selector-pseudo,
+.hljs-tag,
 .hljs-template-tag,
-.hljs-type {
-  color: #d36464
-}
-
-.hljs-section,
-.hljs-title {
-  color: #d34444;
-  font-weight: 700
+.hljs-variable.language_ {
+  color: #f7768e;
 }
 
 .hljs-link,
-.hljs-operator,
-.hljs-regexp,
-.hljs-selector-attr,
-.hljs-selector-pseudo,
-.hljs-symbol,
+.hljs-literal,
+.hljs-number,
+.hljs-params,
 .hljs-template-variable,
+.hljs-type,
 .hljs-variable {
-  color: #75ab56
+  color: #ff9e64;
 }
 
-.hljs-literal {
-  color: #695
+.hljs-attribute,
+.hljs-built_in {
+  color: #e0af68;
+}
+
+.hljs-keyword,
+.hljs-property,
+.hljs-subst,
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-title.function_ {
+  color: #7dcfff;
+}
+
+.hljs-selector-tag {
+  color: #73daca;
 }
 
 .hljs-addition,
-.hljs-built_in,
 .hljs-bullet,
-.hljs-code {
-  color: #397300
+.hljs-quote,
+.hljs-string,
+.hljs-symbol {
+  color: #9ece6a;
 }
 
-.hljs-meta {
-  color: #1f7199
+.hljs-code,
+.hljs-formula,
+.hljs-section {
+  color: #7aa2f7;
 }
 
-.hljs-meta .hljs-string {
-  color: #38a
+.hljs-attr,
+.hljs-char.escape_,
+.hljs-keyword,
+.hljs-name,
+.hljs-operator {
+  color: #bb9af7;
+}
+
+.hljs-punctuation {
+  color: #c0caf5;
+}
+
+.hljs {
+  background: #1a1b26;
+  color: #9aa5ce;
 }
 
 .hljs-emphasis {
-  font-style: italic
+  font-style: italic;
 }
 
 .hljs-strong {
-  font-weight: 700
+  font-weight: 700;
 }
