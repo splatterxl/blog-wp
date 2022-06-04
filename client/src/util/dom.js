@@ -18,6 +18,9 @@ export function createElement(tagName, attrs, children) {
   return elem;
 }
 
+/**
+ * @returns {HTMLDivElement}
+ */
 export function getContainer() {
   let qs = document.getElementById("container");
 
@@ -26,10 +29,11 @@ export function getContainer() {
     qs = document.getElementById("container");
   }
 
+  // @ts-ignore
   return qs;
 }
 
-export function updateDOM(heading, main) {
+export function updateDOM(heading, main, pageId) {
   const container = getContainer();
   while (container.firstElementChild) {
     container.removeChild(container.firstElementChild);
@@ -38,9 +42,10 @@ export function updateDOM(heading, main) {
   container.appendChild(heading);
 
   if (main) {
-    container.appendChild(createElement("hr"));
     container.appendChild(main);
   }
+
+  document.getElementsByTagName("body")[0].id = pageId;
 }
 
 export function title(text) {

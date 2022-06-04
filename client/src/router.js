@@ -25,11 +25,11 @@ export function pushURL(url) {
   );
 }
 
-export function navigate(url, push = true) {
+export function navigate(url, push = true, createLoading = true) {
   info("router", "navigate:", url);
 
   (push ? pushURL : setURL)(url);
-  createPage(url, false);
+  createPage(url, false, createLoading);
   setQuery(new URLSearchParams(url));
   onPageRender();
 }
@@ -42,6 +42,12 @@ export function goUp() {
   if (/^\/(?:app|articles\/\w+)?\/?/g.test(href)) {
     navigate("/");
   } else {
-    navigate("/app/?error=Unexpected tree traversal");
+    createPage(href, false, false, false, 'Unexpected tree traversal');
   }
+}
+
+export function createError(error) {
+  info("router", "error:", error);
+
+  createPage(location.pathname, false, false, false, error);
 }

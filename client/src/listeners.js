@@ -31,7 +31,7 @@ register(window, 'popstate', (event) => {
     info("router", "popstate:", event.target.location.pathname);
 
     event.preventDefault();
-    createPage(location.pathname, false);
+    createPage(location.pathname, false, false, false, null);
   }
 });
 

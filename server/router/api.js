@@ -52,6 +52,7 @@ const loadArticles = async () => new Map(await fs.promises.readdir('./content').
     meta: {
       title: meta.title || slug,
       date: (meta.date && new Date(meta.date)) ?? stat.mtime ?? stat.ctime,
+      description: meta.description || "No description provided.",
       slug,
       author: meta.author ?? null,
     },
@@ -60,7 +61,7 @@ const loadArticles = async () => new Map(await fs.promises.readdir('./content').
   }];
 })));
 
-let articles = await loadArticles();
+export let articles = await loadArticles();
 
 /**
  * @param {ReturnType<import('fastify').default>} fastify 
@@ -111,6 +112,43 @@ export default function api(fastify, opts, done) {
     }
   });
 
+  fastify.get('/articles/:article/full', (req, res) => {
+    // @ts-ignore
+    const article = articles.get(req.params.article);
+
+    if (!article) {
+      res.callNotFound();
+      return;
+    }
+
+    // @ts-ignore
+    switch (req.query["content-type"] ?? 'plain') {
+      case 'plain':
+        res.send({
+          meta: article.meta,
+          content: article.content,
+        });
+        break;
+      case 'html':
+        res.send({
+          meta: article.meta,
+          content: article.parsed,
+        });
+        break;
+      default:
+        res.code(400).send({
+          error: '400: Bad Request',
+          message: 'The requested content type is not supported.',
+          details: {
+            url: req.url,
+            id: req.id,
+            // @ts-ignore
+            content_type: req.query["content-type"],
+          }
+        });
+    }
+  });
+
   fastify.get('/articles', (req, res) => {
     res.send(Array.from(articles.values()).map(article => article.meta));
   });
@@ -119,13 +157,21 @@ export default function api(fastify, opts, done) {
     // @ts-ignore
     if (process.env.NODE_ENV !== 'development' && req.headers['authorization'] !== auth && req.query.auth !== auth) {
       res.code(401);
-      res.send('Unauthorized');
+      res.send({
+        error: '401: Unauthorized',
+        message: 'You are not authorized to perform this action.',
+        details: {
+          url: req.url,
+          id: req.id,
+          action: 'articles.reload',
+        }
+      });
       return;
     }
 
     articles = await loadArticles();
 
-    res.code(201).send(articles);
+    res.code(201).send(Array.from(articles.values()).map(article => article.meta));
   });
 
   done();

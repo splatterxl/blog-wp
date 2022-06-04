@@ -1,29 +1,53 @@
 import { createElement, updateDOM, title } from "./util/dom.js";
 import { query } from "./util/query.js";
-import { setURL, pushURL, navigate } from "./router.js";
+import { setURL, pushURL, navigate, createError } from "./router.js";
 import { debug } from "./util/logging.js";
-import { updateList, session } from './util/session.js';
-import { get } from './util/http.js';
+import { updateList, session, getList } from "./util/session.js";
+import { get } from "./util/http.js";
 
-
-export function createPage(pathname = location.pathname, push = true) {
-  console.log(query);
-
-  if (query.get("error")) {
-    debug("render", "paint error:", query.get("error"));
-    return createErrorPage(query.get("error"));
+export function createPage(
+  pathname = location.pathname,
+  push = true,
+  createLoading = true,
+  set = true,
+  error = query.get("error")
+) {
+  if (createLoading) {
+    updateDOM(
+      createElement("header", null, [
+        createElement("h1", { text: "Loading..." }),
+        createArticleLoading(),
+      ]),
+      null,
+      "loading"
+    );
   }
 
-  const slug = getSlug(pathname);
+  let path;
 
-  if (slug && slug !== "index") {
-    session.page = "article";
-    debug("render", "paint article:", slug);
-    createArticlePage(slug, push);
+  if (error) {
+    debug("render", "paint error:", error);
+    createErrorPage(error);
   } else {
-    session.page = "home";
-    debug("render", "paint app home");
-    createHomePage(push);
+    const slug = getSlug(pathname);
+
+    if (slug && slug !== "index") {
+      session.page = "article";
+      debug("render", "paint article:", slug);
+      path = createArticlePage(
+        slug,
+        getList().find((x) => x.slug === slug),
+        push
+      );
+    } else {
+      session.page = "home";
+      debug("render", "paint app home");
+      path = createHomePage(push);
+    }
+  }
+
+  if (set) {
+    (push ? pushURL : setURL)(pathname);
   }
 }
 
@@ -42,32 +66,35 @@ export function getSlug(path) {
   return pathname[0];
 }
 
-export async function createArticlePage(slug, push = true) {
+export async function createArticlePage(slug, baseData, push = true) {
   const index = await updateList();
 
-  const article = await get('/api/articles/' + slug);
+  const article = await get(
+    `/api/articles/${slug}/full?content-type=html`
+  ).catch(() => null);
 
   if (!article) {
-    return createNotFoundPage();
+    return createError("404");
   }
 
-  const { title: name, author, date: created, modified = null } = article;
-  const content = await fetch(`/api/articles/${slug}/content`).then(res => res.text());
+  const { articleMeta, content } = article;
+
+  const { title: name, author, date: created, modified = null } = articleMeta;
 
   const heading = createElement("h1", {
     class: "article-heading",
     text: name,
   });
-  const meta = createElement("p", {
+  const metaElem = createElement("p", {
     class: "article-meta",
   });
-  meta.appendChild(
+  metaElem.appendChild(
     createElement("span", {
       class: "article-author",
       text: author,
     })
   );
-  meta.appendChild(
+  metaElem.appendChild(
     createElement(
       "span",
       {
@@ -89,7 +116,7 @@ export async function createArticlePage(slug, push = true) {
   );
 
   if (modified && modified !== created) {
-    meta.appendChild(
+    metaElem.appendChild(
       createElement("span", {
         class: "article-date-modified",
         text:
@@ -102,14 +129,18 @@ export async function createArticlePage(slug, push = true) {
     );
   }
 
-  const header = createElement("header", null, [heading, meta]);
+  const header = createElement("header", null, [heading, metaElem]);
 
-  updateDOM(header, createElement("article", {
-    innerHTML: content,
-  }));
+  updateDOM(
+    header,
+    createElement("article", {
+      innerHTML: article.content,
+    }),
+    "article"
+  );
   title(name);
 
-  (push ? pushURL : setURL)(`/articles/${slug}`);
+  return `/articles/${slug}`;
 }
 
 export async function createHomePage(push = true) {
@@ -126,17 +157,17 @@ export async function createHomePage(push = true) {
 
   const list = await createArticleList();
 
-  updateDOM(header, list);
+  updateDOM(header, list, "home");
   title("Home");
 
-  (push ? pushURL : setURL)("/");
+  return "/";
 }
 
 export async function createArticleList() {
   const index = await updateList();
 
   const list = index.map((article) => {
-    const { name, slug } = article;
+    const { title: name, slug } = article;
     const link = createElement(
       "a",
       {
@@ -164,7 +195,7 @@ export async function createArticleList() {
             }),
             createElement("span", {
               class: "article-list-date",
-              text: new Date(article.created).toLocaleDateString(
+              text: new Date(article.date).toLocaleDateString(
                 navigator.language,
                 {
                   dateStyle: "medium",
@@ -198,14 +229,7 @@ export async function createNotFoundPage() {
 
   const header = createElement("header", null, [heading, meta]);
 
-  const list = createElement("main", null, [
-    createElement("p", {
-      text: "While you wait, why not read one of these?",
-    }),
-    await createArticleList(),
-  ]);
-
-  updateDOM(header, list);
+  updateDOM(header, null, "error");
   title("Not Found");
 }
 
@@ -219,20 +243,31 @@ export function createErrorPage(code) {
       const heading = createElement("h1", {
         text: "Error",
       });
-      const meta = createElement("p", {
-        text: "An error occurred. Here's all I know:",
-      }, [
-        createElement("pre", {
-          text: code
-        })
-      ]);
+      const meta = createElement(
+        "p",
+        {
+          text: "An error occurred. Here's all I know:",
+        },
+        [
+          createElement("pre", {
+            text: code,
+          }),
+        ]
+      );
 
       const header = createElement("header", null, [heading, meta]);
 
-      updateDOM(header);
+      updateDOM(header, null, "error");
       title("Error");
 
       break;
     }
   }
+}
+
+function createArticleLoading() {
+  return createElement("p", {
+    class: "article-loading",
+    text: "Hang tight, we're loading the article...",
+  });
 }

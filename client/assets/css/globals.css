@@ -1,7 +1,5 @@
 /* import Montserrat */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap");
-/* icons, TODO: find better host */
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;500;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&display=swap");
 
 /* global styles */
 :root {
@@ -29,7 +27,6 @@ body {
   margin: 0;
 }
 
-
 h1,
 h2 {
   font-family: var(--font-heading);
@@ -41,16 +38,6 @@ a:link,
 a:any-link {
   color: var(--color-primary);
   text-decoration: none;
-}
-
-/* how 2 center a div */
-#container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 10px;
-  z-index: 0;
 }
 
 @media (max-width: 500px) {
@@ -65,7 +52,7 @@ a:any-link {
 }
 
 #navbar a {
-  color: var(--color-text)
+  color: var(--color-text);
 }
 
 /* for some reason dark reader doesn't like the navbar */
@@ -129,14 +116,15 @@ ul#pages {
 
 /* ah yes i love having all of this just for a hamburger menu */
 @media (max-width: 700px) {
-	#nav-inner, .nav-ul {
+  #nav-inner,
+  .nav-ul {
     display: none;
   }
 
   #nav-hamburger {
-		display: initial;
+    display: initial;
     padding-left: 0.5vh;
-	}
+  }
 
   #hamburger-icon {
     font-size: 3em;
@@ -151,12 +139,6 @@ ul#pages {
   #nav-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 700px) {
-  #nav-inner {
-    display: none;
   }
 }
 
@@ -175,13 +157,72 @@ ul#pages {
   font-style: italic;
 }
 
-.article-list-a:link, .article-list-a:any-link {
+.article-list-a:link,
+.article-list-a:any-link {
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
 }
 
+.article-loading,
+.loading {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 200;
+}
+
 a:hover,
 .article-list-a:hover {
   text-decoration: underline;
+}
+
+#container,
+body#home #container,
+body#error #container {
+  padding-top: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+body#article #container {
+  padding: 5%;
+  padding-top: 0;
+  display: grid;
+  grid-template-columns: 20em 1fr;
+  justify-content: initial;
+  align-items: initial;
+}
+
+body#home #article-list,
+body#error #article-list {
+  align-items: left;
+}
+
+body#home h1 {
+  font-size: 3em;
+  margin-bottom: 0;
+}
+
+body#article #container {
+  padding-top: 2em;
+}
+
+#container header {
+  padding-right: 2em;
+}
+
+#container article {
+  padding-left: 2em;
+}
+
+@media (max-width: 700px) {
+  #container {
+    grid-template-columns: 1fr;
+  }
+
+  #nav-inner {
+    display: none;
+  }
 }

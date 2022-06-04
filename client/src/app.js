@@ -1,3 +1,3 @@
 import { navigate } from './router.js';
 
-navigate(location.pathname, false);
+navigate(location.pathname, false, false);
