@@ -115,25 +115,6 @@ ul#pages {
 }
 
 /* ah yes i love having all of this just for a hamburger menu */
-@media (max-width: 700px) {
-  #nav-inner,
-  .nav-ul {
-    display: none;
-  }
-
-  #nav-hamburger {
-    display: initial;
-    padding-left: 0.5vh;
-  }
-
-  #hamburger-icon {
-    font-size: 3em;
-  }
-
-  #navbar.open #nav-inner {
-    display: block;
-  }
-}
 
 @media (min-width: 700px) {
   #nav-inner {
@@ -218,8 +199,38 @@ body#article #container {
 }
 
 @media (max-width: 700px) {
-  #container {
+  #nav-inner,
+  .nav-ul {
+    display: none;
+  }
+
+  #nav-hamburger {
+    display: initial;
+    padding-left: 0.5vh;
+  }
+
+  #hamburger-icon {
+    font-size: 3em;
+  }
+
+  #navbar.open #nav-inner {
+    display: block;
+  }
+
+  #container,
+  body#article #container,
+  body#home #container,
+  body#error #container {
     grid-template-columns: 1fr;
+    padding-top: 0;
+  }
+
+  body#article #container h1 {
+    margin-top: 0;
+  }
+
+  #container article {
+    padding-left: initial;
   }
 
   #nav-inner {

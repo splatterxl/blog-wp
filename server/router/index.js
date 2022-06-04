@@ -1,54 +1,49 @@
-<<<<<<< HEAD
-import api, { renderApp } from './api.js';
-=======
-import api, { articles, renderApp } from './api.js';
->>>>>>> rewrite
-import fs from 'node:fs/promises';
+import api, { articles, renderApp } from "./api.js";
+import fs from "node:fs/promises";
 
-const notFoundPage = await fs.readFile('./client/app/404.html', 'utf8');
+const notFoundPage = await fs.readFile("./client/app/404.html", "utf8");
 
 /**
- * @param {ReturnType<import('fastify').default>} fastify 
+ * @param {ReturnType<import('fastify').default>} fastify
  */
 export default function router(fastify, options, done) {
   fastify
-    .addHook('onRequest', (req, res, done) => {
+    .addHook("onRequest", (req, res, done) => {
       res.render = function () {
         renderApp(res);
       };
-<<<<<<< HEAD
-      console.debug(`${req.id} - ${req.method} ${req.url} - ${req.headers['user-agent']} - ${req.ip}`);
-=======
->>>>>>> rewrite
       done();
     })
-    .addHook('onSend', (req, res, payload, done) => {
-      res.header('X-Req-Id', req.id);
+    .addHook("onSend", (req, res, payload, done) => {
+      res.header("X-Req-Id", req.id);
 
       done();
     })
-    .addHook('onResponse', (req, res, done) => {
-<<<<<<< HEAD
-      console.debug(`${req.id} - ${req.method} ${req.url} -> ${res.statusCode}`);
-=======
-      console.debug(`${req.id} - ${req.method} ${req.url} -> ${res.statusCode} - ${req.headers['user-agent']} - ${req.ips?.join(', ') ?? req.ip}`);
->>>>>>> rewrite
+    .addHook("onResponse", (req, res, done) => {
+      console.debug(
+        `${req.id} - ${req.method} ${req.url} -> ${res.statusCode} - ${
+          req.headers["user-agent"]
+        } - ${req.ips?.join(", ") ?? req.ip}`
+      );
       done();
     })
-    .addHook('onError', (req, res, error, done) => {
+    .addHook("onError", (req, res, error, done) => {
       console.error(`${req.id} - ${req.method} ${req.url} -> ${error.message}`);
       done();
     });
 
   fastify.setNotFoundHandler((req, res) => {
     res.code(404);
-    res.header('Content-Type', 'text/html; charset=utf-8');
+    res.header("Content-Type", "text/html; charset=utf-8");
     res.send(notFoundPage);
   });
 
   function redirect(a, b) {
     fastify.get(a, (_, res) => {
-      res.code(302).header('Location', b).send("Found. Redirecting to " + b);
+      res
+        .code(302)
+        .header("Location", b)
+        .send("Found. Redirecting to " + b);
     });
   }
   function app(path) {
@@ -57,26 +52,34 @@ export default function router(fastify, options, done) {
     });
   }
 
-  redirect('/articles/index', '/articles');
-  app('/articles');
-  app('/app');
-  app('/app/');
-  app('/');
+  redirect("/articles/index", "/articles");
+  app("/articles");
+  app("/app");
+  app("/app/");
+  app("/");
 
-  redirect('/avatar', '/assets/img/4269174cecd5819881f4f1e0e611bb284f5164d6.png');
+  redirect(
+    "/avatar",
+    "/assets/img/4269174cecd5819881f4f1e0e611bb284f5164d6.png"
+  );
 
   fastify.register(api, {
-    prefix: '/api',
+    prefix: "/api",
   });
 
-  fastify.get('/articles/:slug', (req, res) => {
-    if (['bot', 'spider', 'crawl'].some(v => req.headers['user-agent']?.includes(v))) {
+  fastify.get("/articles/:slug", (req, res) => {
+    if (
+      ["bot", "spider", "crawl"].some((v) =>
+        req.headers["user-agent"]?.includes(v)
+      )
+    ) {
       // @ts-ignore
-      res.header('Content-Type', 'text/html; charset=utf-8').send(createHtmlPreview(req.params.slug));
+      res
+        .header("Content-Type", "text/html; charset=utf-8")
+        .send(createHtmlPreview(req.params.slug));
       return;
     } else {
       res.render();
-
     }
   });
 
@@ -115,7 +118,9 @@ function createHtmlPreview(slug) {
   <meta property="og:thumbnail" content="/avatar">
   <meta property="og:image" content="/avatar">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="${article.meta.author ? `${article.meta.author} on ` : ""}Splatterxl's Blog">
+  <meta property="og:site_name" content="${
+    article.meta.author ? `${article.meta.author} on ` : ""
+  }Splatterxl's Blog">
   <meta property="og:locale" content="en_GB">
   <!-- twitter -->
   <meta name="twitter:card" content="summary_small_image">
@@ -132,4 +137,4 @@ function createHtmlPreview(slug) {
   <p>${article.meta.description}</p>
 </body>
 </html>`;
-};
+}

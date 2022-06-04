@@ -77,7 +77,7 @@ export async function createArticlePage(slug, baseData, push = true) {
     return createError("404");
   }
 
-  const { articleMeta, content } = article;
+  const { meta: articleMeta, content } = article;
 
   const { title: name, author, date: created, modified = null } = articleMeta;
 
