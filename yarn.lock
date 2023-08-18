@@ -117,7 +117,7 @@ __metadata:
     remarkable: ^2.0.1
     webpack: ^5.72.1
     webpack-cli: ^4.9.2
-    yaml: ^2.1.0
+    yaml: ^2.2.2
   languageName: unknown
   linkType: soft
 
@@ -3834,10 +3834,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "yaml@npm:2.1.0"
-  checksum: 59323a8b51b10d9ad0eab951e7a1f315f1076c123b08ffe60441add1df4fa3433b1d5783b21c50a65536e9d853b23fa567921dbd4bc0d711be2dbf14a06be03b
+"yaml@npm:^2.2.2":
+  version: 2.3.1
+  resolution: "yaml@npm:2.3.1"
+  checksum: 2c7bc9a7cd4c9f40d3b0b0a98e370781b68b8b7c4515720869aced2b00d92f5da1762b4ffa947f9e795d6cd6b19f410bd4d15fdd38aca7bd96df59bd9486fb54
   languageName: node
   linkType: hard
 
